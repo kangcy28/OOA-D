@@ -6,10 +6,10 @@ namespace OoadCoach
 {
     public class LearningState
     {
-        public int CurrentStage { get; set; } = 4;
-        public string StageName { get; set; } = "🏆 全課程圓滿結業 (Graduated)";
-        public int CurrentTask { get; set; } = 5;
-        public string TaskTitle { get; set; } = "任務 4.5：階段四終極畢業考核 (通關滿分 100)";
+        public int CurrentStage { get; set; } = 5;
+        public string StageName { get; set; } = "階段五：進階 OOA/D —— 值物件 (Value Object) 與裝飾者模式 (Decorator)";
+        public int CurrentTask { get; set; } = 1;
+        public string TaskTitle { get; set; } = "任務 5.1 & 5.2：Entity vs. Value Object 與 DateRange 防超賣區間重疊判定";
         public string Language { get; set; } = "C#";
         public DateTime LastUpdated { get; set; } = DateTime.Now;
     }
@@ -29,7 +29,7 @@ namespace OoadCoach
             while (true)
             {
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("\n[OOAD 教練] 請輸入指令 (/status, /challenge, /hint, /exam, /reset, 或 exit) > ");
+                Console.Write("\n[OOAD 教練] 請輸入指令 (/status, /challenge, /hint, /exam, /mock, /reset, 或 exit) > ");
                 Console.ResetColor();
 
                 string input = Console.ReadLine()?.Trim() ?? "";
@@ -57,6 +57,7 @@ namespace OoadCoach
             Console.WriteLine("  /challenge : 顯示當前挑戰內容");
             Console.WriteLine("  /hint      : 取得解題提示");
             Console.WriteLine("  /exam      : 查看晉級通關標準與考核");
+            Console.WriteLine("  /mock      : 查看全真白板面試框架與經典題庫 (方案 B)");
             Console.WriteLine("  /reset     : 重設進度");
             Console.WriteLine("===============================================================\n");
         }
@@ -77,12 +78,15 @@ namespace OoadCoach
                 case "/exam":
                     ShowExam();
                     break;
+                case "/mock":
+                    ShowMockInterviewGuide();
+                    break;
                 case "/reset":
                     ResetProgress();
                     break;
                 default:
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"未知的指令：{cmd}。請使用 /status, /challenge, /hint, /exam, /reset 或 exit");
+                    Console.WriteLine($"未知的指令：{cmd}。請使用 /status, /challenge, /hint, /exam, /mock, /reset 或 exit");
                     Console.ResetColor();
                     break;
             }
@@ -103,32 +107,53 @@ namespace OoadCoach
         private static void ShowChallenge()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\n🎯 【當前挑戰題目：任務 4.1 - 端到端系統實戰 (完整規格拆解與領域建模)】");
-            Console.WriteLine("情境：飯店線上客房預訂與退訂系統 (Hotel Reservation System)。");
-            Console.WriteLine("需求包含：房型/房間庫存、會員預訂、入住與退房日期計算、取消退款策略、押金與付款。");
-            Console.WriteLine("\n請在 Antigravity 聊天室跟隨 AI 助教指引，開啟端到端整合實戰！");
-            Console.WriteLine("💡 提示：輸入 /hint 獲取思路引導！");
+            Console.WriteLine("\n🎯 【當前挑戰題目：階段五 - 值物件 (Value Object) 與裝飾者模式 (Decorator)】");
+            Console.WriteLine("請打開 Stage5_AdvancedOOAD/Program.cs 查看進階面試重構情境：");
+            Console.WriteLine("1. 【任務 5.1 & 5.2 - DateRange 值物件】：");
+            Console.WriteLine("   - 為什麼 Guest 是 Entity（需要 ID），而 DateRange 或 Money 是 Value Object（不可變、由值決定相等性）？");
+            Console.WriteLine("   - 如何封裝 DateRange.OverlapsWith(DateRange other) 來解決訂房/會議室防超賣時段衝突判定？");
+            Console.WriteLine("2. 【任務 5.3 - Decorator 裝飾者模式】：");
+            Console.WriteLine("   - 如果 VIP 9 折 + 滿千折百 + 生日折 50 要能「任意動態疊加」，不改 Order 要怎麼包起來？");
+            Console.WriteLine("\n💡 提示：輸入 /hint 獲取思路引導，或輸入 /mock 查看面試題庫！");
             Console.ResetColor();
         }
 
         private static void ShowHint()
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("\n💡 【思路提示】");
-            Console.WriteLine("1. 先做 OOA：提取實體、畫出 UML 概念圖，不寫半行程式碼。");
-            Console.WriteLine("2. 再做 OOD：用 GRASP 分配職責，用 SOLID 拆分介面與策略（如退款政策）。");
-            Console.WriteLine("3. 進入 OOP 實作：撰寫純粹 C# 領域模型與單元測試！");
+            Console.WriteLine("\n💡 【階段五思路提示】");
+            Console.WriteLine("1. 值物件 (Value Object)：沒有獨立生命週期 ID，建立後不可修改 (Immutable)，且把日期驗證、重疊計算都封裝在自己身上！");
+            Console.WriteLine("2. 兩個半開區間 [StartA, EndA) 與 [StartB, EndB) 重疊條件：StartA < EndB && StartB < EndA。");
+            Console.WriteLine("3. 裝飾者模式 (Decorator)：裝飾者類別「既實作 IDiscountStrategy，建構子又包著另一個 IDiscountStrategy」！");
             Console.ResetColor();
         }
 
         private static void ShowExam()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n🏆 【階段四終極畢業考核條件】");
-            Console.WriteLine("1. 具備面對中型陌生商業需求，獨立完成 OOA 概念建模的能力。");
-            Console.WriteLine("2. 具備運用 OOD / SOLID / GRASP 分配職責並拆分介面的能力。");
-            Console.WriteLine("3. 產出高內聚、低耦合、100% 可單元測試的優質 C# 程式碼！");
-            Console.WriteLine("\n完成階段四後，恭喜你正式成為 OOA/D 專業架構實戰者！");
+            Console.WriteLine("\n🏆 【階段五晉級考核條件】");
+            Console.WriteLine("1. 清楚區分 Entity 與 Value Object，成功封裝不可變的 DateRange 值物件與重疊檢查。");
+            Console.WriteLine("2. 能用 Decorator Pattern 動態組合多重優惠規則，扛住面試官的「策略疊加追問」。");
+            Console.WriteLine("3. 通過白板面試官的邊界測試追問（例如退房當天同一天新房客入住算不算重疊？）。");
+            Console.WriteLine("\n完成任務 5.1 ~ 5.3 後，在 AI 聊天室申請階段五考核（或隨時輸入「切換模擬面試」）！");
+            Console.ResetColor();
+        }
+
+        private static void ShowMockInterviewGuide()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\n🎤 【方案 B：全真 OOD 白板模擬面試指南 (Low-Level Design)】");
+            Console.WriteLine("標準面試解題 4 步驟：");
+            Console.WriteLine("  Step 1. 需求釐清 (Clarify Requirements)：主動提問、收斂系統邊界與核心用例");
+            Console.WriteLine("  Step 2. 領域分析 (OOA Core Entities)：識別實體、值物件與聚合/組合關係");
+            Console.WriteLine("  Step 3. 職責與介面設計 (OOD & Patterns)：定義類別方法簽章與套用設計模式");
+            Console.WriteLine("  Step 4. 應對追問與編碼 (Handle Follow-ups)：抗住需求變更並寫出核心可測代碼");
+            Console.WriteLine("\n🔥 經典面試題庫：");
+            Console.WriteLine("  1. 智慧停車場系統 (Parking Lot System) ⭐⭐⭐");
+            Console.WriteLine("  2. 自動販賣機 / 智慧取件櫃 (Vending Machine - State Pattern) ⭐⭐⭐⭐");
+            Console.WriteLine("  3. 進階電商複合促銷與會議室預約系統 ⭐⭐⭐⭐");
+            Console.WriteLine("  4. 電梯調度系統 (Elevator System) ⭐⭐⭐⭐⭐");
+            Console.WriteLine("\n👉 在 AI 聊天室輸入「切換模擬面試」即可立刻開始演練！");
             Console.ResetColor();
         }
 

@@ -6,18 +6,29 @@
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20%26%20SOLID-blue)](#-核心學習里程碑)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-本專案記錄了一位軟體工程師從「完全沒寫過物件導向」，歷經四大進階階段，蛻變為具備 **OOA 領域建模**、**OOD 職責分配**、**SOLID 彈性架構** 與 **單元測試驅動開發** 能力的完整實戰歷程與程式碼範例。
+本專案記錄了一位軟體工程師從「完全沒寫過物件導向」，歷經基礎篇（Stage 1~4）與進階面試實戰篇（Stage 5~8），蛻變為具備 **OOA 領域建模**、**OOD 職責分配**、**SOLID 彈性架構**、**進階設計模式** 與 **白板系統設計面試（Low-Level Design）** 能力的完整實戰歷程與程式碼範例。
+
+> 💡 **雙軌學習與實戰設計**：支援 **方案 A（系統化進階闖關模式）** 與 **方案 B（全真白板模擬面試模式 Mock Interview）** 隨時自由切換！
 
 ---
 
-## 📊 四大階段成果總覽
+## 📊 全階段課程成果總覽
 
+### 基礎實戰篇（已完成 ✅）
 | 階段 | 核心主題 | 驗收核心 | 通關成績 |
 | :--- | :--- | :--- | :---: |
 | **Stage 1** | **物件思維覺醒** | 消除貧血模型、Tell Don't Ask、建立資料保護守門員 | 🏆 **95 / 100** |
 | **Stage 2** | **OOA 領域分析** | 自然語言萃取實體、聚合 vs. 組合辨析、拒絕技術污染 | 🏆 **100 / 100** |
 | **Stage 3** | **OOD 職責分配** | GRASP 資訊專家、SOLID 五大原則、策略模式重構 | 🏆 **100 / 100** |
 | **Stage 4** | **端到端實戰** | 中型飯店預訂領域模型（DDD 聚合根）、xUnit 極速單元測試 | 🏆 **100 / 100** |
+
+### 進階 OOA/D 與白板面試實戰篇（進行中 🚀）
+| 階段 | 核心主題 | 驗收核心與面試考點 | 狀態 |
+| :--- | :--- | :--- | :---: |
+| **Stage 5** | **值物件與裝飾者模式** | 消滅基本型別偏執、`DateRange` 防超賣重疊判定、多重優惠動態疊加 | 🚀 **進行中** |
+| **Stage 6** | **複雜狀態機重構** | 狀態模式（State Pattern）手撕面試名題：自動販賣機 / 智慧取件櫃 | 🔒 待解鎖 |
+| **Stage 7** | **事件驅動與解耦** | 觀察者模式 / 領域事件（Domain Events），避免 Service 依賴膨脹 | 🔒 待解鎖 |
+| **Stage 8** | **終極白板模擬面試** | 4 步標準 LLD 解題法手撕經典題：**智慧停車場系統 (Parking Lot)** | 🔒 待解鎖 |
 
 詳細進度與考核答辯歷程請參閱 [ooad_learning_tracker.md](ooad_learning_tracker.md)。
 
@@ -59,7 +70,15 @@
 * **xUnit 單元測試套件 (`Stage4_SystemDesign.Tests`)**：
   * 遵循 AAA（Arrange, Act, Assert）原則。
   * 涵蓋：天數房費計算、入住前 5 天全退 (100%)、入住前 1 天半退 (50%)、不可退款策略 (0%)，以及非法日期建構子防禦。
-  * **5 個測試案例在 31 毫秒內於記憶體中全數綠燈通過**，完全不依賴外部資料庫或網路 API。
+  * **5 個測試案例在數十毫秒內於記憶體中全數綠燈通過**，完全不依賴外部資料庫或網路 API。
+
+### 📁 Stage 5 ~ 8: 進階 OOA/D 與白板面試實戰篇 (`Stage5_AdvancedOOAD`)
+* **Stage 5（值物件與裝飾者模式）**：
+  * **Value Object**：消滅基本型別偏執，封裝不可變 `DateRange` 處理訂房/會議室防超賣時段重疊（`OverlapsWith`）。
+  * **Decorator Pattern**：解決面試高頻追問「多重折扣如何不改 `Order` 動態疊加」。
+* **Stage 6（狀態模式 State Pattern）**：以自動販賣機實戰消滅複雜的狀態 `if-else`。
+* **Stage 7（觀察者 / 領域事件 Domain Events）**：發布訂閱解耦跨領域副作用。
+* **Stage 8（白板系統設計面試）**：以 4 步標準面試法實戰「智慧停車場系統（Parking Lot）」。
 
 ---
 
@@ -68,10 +87,10 @@
 ```text
 OOA-D/
 ├── OOAD_Learning.sln                  # 整合解決方案
-├── ooad_learning_tracker.md           # 四大階段學習進度追蹤與考核記錄
+├── ooad_learning_tracker.md           # 全階段學習進度追蹤與考核記錄
 ├── run_coach.bat                      # 互動學習終端教練快捷啟動腳本
 │
-├── OoadCoach/                         # 終端互動學習助理 (CLI Assistant)
+├── OoadCoach/                         # 終端互動學習助理 (CLI Assistant，含 /mock 指南)
 │   ├── Program.cs
 │   └── OoadCoach.csproj
 │
@@ -87,9 +106,13 @@ OOA-D/
 │   ├── Class1.cs
 │   └── Stage4_SystemDesign.csproj
 │
-└── Stage4_SystemDesign.Tests/         # 階段四：xUnit 單元測試專案 (31ms 全綠燈)
-    ├── UnitTest1.cs
-    └── Stage4_SystemDesign.Tests.csproj
+├── Stage4_SystemDesign.Tests/         # 階段四：xUnit 單元測試專案
+│   ├── UnitTest1.cs
+│   └── Stage4_SystemDesign.Tests.csproj
+│
+└── Stage5_AdvancedOOAD/               # 階段五：Value Object 與 Decorator 進階練習
+    ├── Program.cs
+    └── Stage5_AdvancedOOAD.csproj
 ```
 
 ---
@@ -116,7 +139,10 @@ dotnet test
 # 執行階段三 (策略模式與折扣計算示範)
 dotnet run --project Stage3_Playground
 
-# 啟動互動學習教練
+# 執行階段五 (進階 Value Object DateRange 與防超賣重疊判定示範)
+dotnet run --project Stage5_AdvancedOOAD
+
+# 啟動互動學習教練 (支援 /mock 指令查看白板面試題庫)
 run_coach.bat
 ```
 
