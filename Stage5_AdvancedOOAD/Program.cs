@@ -77,9 +77,59 @@ namespace Stage5_AdvancedOOAD
         public decimal Apply(decimal amount) => amount;
     }
 
-    // 思考題：如果 VIP 打 9 折、滿千折 100、生日再折 50 要能「任意順序、自由疊加」：
-    // 我們在任務 5.3 將用裝飾者模式 (Decorator Pattern) 讓每個優惠包著上一個優惠！
-    // 例如：new BirthdayDiscount(new OverThousandDiscount(new VipDiscount(new BasePrice())))
+    /// <summary>
+    /// 裝飾者基底抽象類別：實作 IDiscount，並在內部聚合另一個 IDiscount
+    /// </summary>
+    public abstract class DiscountDecorator : IDiscount
+    {
+        protected readonly IDiscount _inner;
+
+        public DiscountDecorator(IDiscount inner)
+        {
+            _inner = inner ?? throw new ArgumentNullException(nameof(inner));
+        }
+
+        public virtual decimal Apply(decimal amount)
+        {
+            var currentAmount = _inner.Apply(amount);
+            return ApplyDiscount(currentAmount);
+        }
+
+        protected abstract decimal ApplyDiscount(decimal currentAmount);
+    }
+
+    /// <summary>
+    /// VIP 會員：打 9 折
+    /// </summary>
+    public class VipDiscount : DiscountDecorator
+    {
+        public VipDiscount(IDiscount inner) : base(inner) { }
+
+        protected override decimal ApplyDiscount(decimal currentAmount)
+            => currentAmount * 0.9m;
+    }
+
+    /// <summary>
+    /// 滿千折百：若當前金額滿 1000 元，折抵 100 元
+    /// </summary>
+    public class OverThousandDiscount : DiscountDecorator
+    {
+        public OverThousandDiscount(IDiscount inner) : base(inner) { }
+
+        protected override decimal ApplyDiscount(decimal currentAmount)
+            => currentAmount >= 1000m ? currentAmount - 100m : currentAmount;
+    }
+
+    /// <summary>
+    /// 壽星優惠：現折 50 元（最低不小於 0）
+    /// </summary>
+    public class BirthdayDiscount : DiscountDecorator
+    {
+        public BirthdayDiscount(IDiscount inner) : base(inner) { }
+
+        protected override decimal ApplyDiscount(decimal currentAmount)
+            => Math.Max(0m, currentAmount - 50m);
+    }
 
     class Program
     {
@@ -88,6 +138,7 @@ namespace Stage5_AdvancedOOAD
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("=== 階段五：進階 OOA/D 面試實戰 (Value Object & Decorator) ===\n");
 
+            // 1. DateRange 測試
             var stayA = new DateRange(new DateTime(2026, 12, 1), new DateTime(2026, 12, 4)); // 12/1 ~ 12/4
             var stayB = new DateRange(new DateTime(2026, 12, 3), new DateTime(2026, 12, 6)); // 12/3 ~ 12/6 (重疊)
             var stayC = new DateRange(new DateTime(2026, 12, 4), new DateTime(2026, 12, 6)); // 12/4 ~ 12/6 (無縫接軌)
@@ -97,7 +148,24 @@ namespace Stage5_AdvancedOOAD
             Console.WriteLine($"A (12/1~12/4) 與 C (12/4~12/6) 是否衝突？ {stayA.OverlapsWith(stayC)}");
 
             var copyOfA = new DateRange(new DateTime(2026, 12, 1), new DateTime(2026, 12, 4));
-            Console.WriteLine($"值物件相等性檢查 (stayA.Equals(copyOfA))： {stayA.Equals(copyOfA)}");
+            Console.WriteLine($"值物件相等性檢查 (stayA.Equals(copyOfA))： {stayA.Equals(copyOfA)}\n");
+
+            // 2. 裝飾者模式 (多重優惠動態疊加) 驗證
+            decimal originalPrice = 1000m;
+            Console.WriteLine($"--- 原價：${originalPrice} ---");
+
+            // 方案 A：先算滿千折 100 ➔ 再打 VIP 9 折
+            IDiscount discountA = new VipDiscount(new OverThousandDiscount(new BasePrice()));
+            Console.WriteLine($"方案 A (先滿千折百 ➔ 再打 VIP 9折)：${discountA.Apply(originalPrice)}");
+
+            // 方案 B：先打 VIP 9 折 ➔ 再算滿千折 100
+            IDiscount discountB = new OverThousandDiscount(new VipDiscount(new BasePrice()));
+            Console.WriteLine($"方案 B (先打 VIP 9折 ➔ 再滿千折百)：${discountB.Apply(originalPrice)}");
+
+            // 方案 C：全部疊加（VIP 9折 ➔ 滿千折百 ➔ 壽星折 50）原價 1500
+            decimal higherPrice = 1500m;
+            IDiscount allInOne = new BirthdayDiscount(new OverThousandDiscount(new VipDiscount(new BasePrice())));
+            Console.WriteLine($"原價 ${higherPrice} 全疊加 (VIP➔滿千折百➔壽星)：${allInOne.Apply(higherPrice)}");
         }
     }
 }
