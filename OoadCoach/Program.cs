@@ -6,10 +6,10 @@ namespace OoadCoach
 {
     public class LearningState
     {
-        public int CurrentStage { get; set; } = 2;
-        public string StageName { get; set; } = "階段二：OOA 領域分析 (需求拆解與概念建模)";
-        public int CurrentTask { get; set; } = 1;
-        public string TaskTitle { get; set; } = "任務 2.1：從自然語言提取實體（名詞/動詞分析法）";
+        public int CurrentStage { get; set; } = 4;
+        public string StageName { get; set; } = "🏆 全課程圓滿結業 (Graduated)";
+        public int CurrentTask { get; set; } = 5;
+        public string TaskTitle { get; set; } = "任務 4.5：階段四終極畢業考核 (通關滿分 100)";
         public string Language { get; set; } = "C#";
         public DateTime LastUpdated { get; set; } = DateTime.Now;
     }
@@ -103,12 +103,11 @@ namespace OoadCoach
         private static void ShowChallenge()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\n🎯 【當前挑戰題目：任務 1.1】");
-            Console.WriteLine("情境：請打開 Stage1_Playground/Program.cs 查看程序導向的飲料店程式碼。");
-            Console.WriteLine("\n請在 Antigravity 聊天室或心中思考以下兩個問題：");
-            Console.WriteLine("1. 災難情境 1：如果店裡要賣 10 種飲料，且有 3 個店員同時結帳，變數全散在 Main 會變怎樣？");
-            Console.WriteLine("2. 災難情境 2：如果有人寫了 drinkStock = -99，現有程式碼有人能阻止他把庫存改成負數嗎？");
-            Console.WriteLine("\n💡 提示：試著用直覺回答，或者在 AI 聊天室回覆你的答案，AI 會為你審核！");
+            Console.WriteLine("\n🎯 【當前挑戰題目：任務 4.1 - 端到端系統實戰 (完整規格拆解與領域建模)】");
+            Console.WriteLine("情境：飯店線上客房預訂與退訂系統 (Hotel Reservation System)。");
+            Console.WriteLine("需求包含：房型/房間庫存、會員預訂、入住與退房日期計算、取消退款策略、押金與付款。");
+            Console.WriteLine("\n請在 Antigravity 聊天室跟隨 AI 助教指引，開啟端到端整合實戰！");
+            Console.WriteLine("💡 提示：輸入 /hint 獲取思路引導！");
             Console.ResetColor();
         }
 
@@ -116,20 +115,20 @@ namespace OoadCoach
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine("\n💡 【思路提示】");
-            Console.WriteLine("1. 資料分散：想像每多一種飲料，就要多生出 drinkName2, drinkPrice2, drinkStock2...");
-            Console.WriteLine("   真實世界中，「珍珠奶茶」的名稱、價格、庫存是一起的！為甚麼在程式裡要拆開？");
-            Console.WriteLine("2. 缺少守門員：在程序化代碼裡，任何地方都能改變數，根本沒有「安全檢查機制」。");
+            Console.WriteLine("1. 先做 OOA：提取實體、畫出 UML 概念圖，不寫半行程式碼。");
+            Console.WriteLine("2. 再做 OOD：用 GRASP 分配職責，用 SOLID 拆分介面與策略（如退款政策）。");
+            Console.WriteLine("3. 進入 OOP 實作：撰寫純粹 C# 領域模型與單元測試！");
             Console.ResetColor();
         }
 
         private static void ShowExam()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n🏆 【階段一晉級考核條件】");
-            Console.WriteLine("1. 能消滅貧血模型（不再寫只有屬性沒有行為的 class）。");
-            Console.WriteLine("2. 徹底遵守『Tell, Don't Ask』原則（叫物件去扣庫存，而不是查庫存後自己改）。");
-            Console.WriteLine("3. 屬性皆私有化封裝，保護業務規則不被非法竄改。");
-            Console.WriteLine("\n準備好後可在 AI 對話框輸入「申請階段一考核」！");
+            Console.WriteLine("\n🏆 【階段四終極畢業考核條件】");
+            Console.WriteLine("1. 具備面對中型陌生商業需求，獨立完成 OOA 概念建模的能力。");
+            Console.WriteLine("2. 具備運用 OOD / SOLID / GRASP 分配職責並拆分介面的能力。");
+            Console.WriteLine("3. 產出高內聚、低耦合、100% 可單元測試的優質 C# 程式碼！");
+            Console.WriteLine("\n完成階段四後，恭喜你正式成為 OOA/D 專業架構實戰者！");
             Console.ResetColor();
         }
 
