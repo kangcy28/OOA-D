@@ -127,6 +127,18 @@ namespace Stage7_ObserverAndEvents
             Console.WriteLine($"  ➔ [{HandlerName}] 收到事件，開立訂單 {domainEvent.OrderId} 發票 (${domainEvent.TotalAmount})。");
         }
     }
+    /// <summary>
+    /// 訂閱者 4：郵件寄送處理器
+    /// </summary>
+    public class EmailHandler : IOrderPlacedHandler
+    {
+        public string HandlerName => "郵件服務 (EmailHandler)";
+
+        public void Handle(OrderPlacedEvent domainEvent)
+        {
+            Console.WriteLine($"  ➔ [{HandlerName}] 收到事件，寄送訂單 {domainEvent.OrderId} 的確認郵件 (${domainEvent.TotalAmount})。");
+        }
+    }
 
     /// <summary>
     /// 發布者 (Publisher)：徹底解耦的 OrderService，只專注訂單建立與事件廣播，
@@ -197,10 +209,11 @@ namespace Stage7_ObserverAndEvents
             {
                 new InventoryHandler(),
                 new LoyaltyPointsHandler(),
-                new InvoiceHandler()
+                new InvoiceHandler(),                
+                new EmailHandler()
             });
 
-            Console.WriteLine("1. 執行第一筆下單（3 位初始訂閱者響應）：");
+            Console.WriteLine("1. 執行第一筆下單（4 位初始訂閱者響應）：");
             orderService.PlaceOrder("ORD-2026-001", "vip@example.com", 1500m);
 
             // 2. 動態掛載新訂閱者（展示執行期擴充，OrderService 本體零修改）

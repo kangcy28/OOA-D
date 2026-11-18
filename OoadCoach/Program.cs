@@ -6,10 +6,10 @@ namespace OoadCoach
 {
     public class LearningState
     {
-        public int CurrentStage { get; set; } = 7;
-        public string StageName { get; set; } = "階段七：進階架構 —— 事件驅動與解耦 (Observer / Domain Events)";
-        public int CurrentTask { get; set; } = 1;
-        public string TaskTitle { get; set; } = "任務 7.1 & 7.2：消滅 Service 依賴膨脹與領域事件解耦實戰";
+        public int CurrentStage { get; set; } = 8;
+        public string StageName { get; set; } = "🏆 全階段大滿貫結業（階段 1 ～ 階段 8 全數通關！）";
+        public int CurrentTask { get; set; } = 4;
+        public string TaskTitle { get; set; } = "已通關：智慧停車場系統白板面試滿分畢業！(歡迎隨時輸入「切換模擬面試」繼續對練)";
         public string Language { get; set; } = "C#";
         public DateTime LastUpdated { get; set; } = DateTime.Now;
     }
