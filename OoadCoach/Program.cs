@@ -6,10 +6,10 @@ namespace OoadCoach
 {
     public class LearningState
     {
-        public int CurrentStage { get; set; } = 5;
-        public string StageName { get; set; } = "階段五：進階 OOA/D —— 值物件 (Value Object) 與裝飾者模式 (Decorator)";
+        public int CurrentStage { get; set; } = 7;
+        public string StageName { get; set; } = "階段七：進階架構 —— 事件驅動與解耦 (Observer / Domain Events)";
         public int CurrentTask { get; set; } = 1;
-        public string TaskTitle { get; set; } = "任務 5.1 & 5.2：Entity vs. Value Object 與 DateRange 防超賣區間重疊判定";
+        public string TaskTitle { get; set; } = "任務 7.1 & 7.2：消滅 Service 依賴膨脹與領域事件解耦實戰";
         public string Language { get; set; } = "C#";
         public DateTime LastUpdated { get; set; } = DateTime.Now;
     }
@@ -99,7 +99,7 @@ namespace OoadCoach
             Console.WriteLine($"  - 當前階段：第 {state.CurrentStage} 階段 ({state.StageName})");
             Console.WriteLine($"  - 當前任務：{state.TaskTitle}");
             Console.WriteLine($"  - 偏好語言：{state.Language}");
-            Console.WriteLine($"  - 專案目錄：C:\\Users\\USER\\Desktop\\OOAD");
+            Console.WriteLine($"  - 專案目錄：C:\\Users\\FIT1635\\Documents\\OOA-D");
             Console.WriteLine($"  - 完整進度表：請參閱專案目錄下的 ooad_learning_tracker.md");
             Console.ResetColor();
         }
@@ -107,13 +107,13 @@ namespace OoadCoach
         private static void ShowChallenge()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\n🎯 【當前挑戰題目：階段五 - 值物件 (Value Object) 與裝飾者模式 (Decorator)】");
-            Console.WriteLine("請打開 Stage5_AdvancedOOAD/Program.cs 查看進階面試重構情境：");
-            Console.WriteLine("1. 【任務 5.1 & 5.2 - DateRange 值物件】：");
-            Console.WriteLine("   - 為什麼 Guest 是 Entity（需要 ID），而 DateRange 或 Money 是 Value Object（不可變、由值決定相等性）？");
-            Console.WriteLine("   - 如何封裝 DateRange.OverlapsWith(DateRange other) 來解決訂房/會議室防超賣時段衝突判定？");
-            Console.WriteLine("2. 【任務 5.3 - Decorator 裝飾者模式】：");
-            Console.WriteLine("   - 如果 VIP 9 折 + 滿千折百 + 生日折 50 要能「任意動態疊加」，不改 Order 要怎麼包起來？");
+            Console.WriteLine("\n🎯 【當前挑戰題目：階段七 - 事件驅動與解耦 (Observer / Domain Events)】");
+            Console.WriteLine("請打開 Stage7_ObserverAndEvents/Program.cs 查看電商下單服務解耦情境：");
+            Console.WriteLine("1. 【任務 7.1 - 痛點診斷】：");
+            Console.WriteLine("   - 為什麼 BadOrderService 把扣庫存、發點數、開立發票、寄通知全塞在 PlaceOrder 裡會引發「建構子依賴爆炸」與違反 SRP / OCP？");
+            Console.WriteLine("2. 【任務 7.2 & 7.3 - Observer / Domain Events 解耦與擴充】：");
+            Console.WriteLine("   - 如何透過 OrderPlacedEvent 與 IOrderPlacedHandler，讓 OrderService 只管核心下單與發布事件？");
+            Console.WriteLine("   - 試著新增「風控防刷檢查」或「大數據分析埋點」訂閱者，做到對核心 OrderService 零修改！");
             Console.WriteLine("\n💡 提示：輸入 /hint 獲取思路引導，或輸入 /mock 查看面試題庫！");
             Console.ResetColor();
         }
@@ -121,21 +121,21 @@ namespace OoadCoach
         private static void ShowHint()
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.WriteLine("\n💡 【階段五思路提示】");
-            Console.WriteLine("1. 值物件 (Value Object)：沒有獨立生命週期 ID，建立後不可修改 (Immutable)，且把日期驗證、重疊計算都封裝在自己身上！");
-            Console.WriteLine("2. 兩個半開區間 [StartA, EndA) 與 [StartB, EndB) 重疊條件：StartA < EndB && StartB < EndA。");
-            Console.WriteLine("3. 裝飾者模式 (Decorator)：裝飾者類別「既實作 IDiscountStrategy，建構子又包著另一個 IDiscountStrategy」！");
+            Console.WriteLine("\n💡 【階段七思路提示】");
+            Console.WriteLine("1. 依賴反轉升級版：發布者 (OrderService) 不再認識任何具體訂閱者服務，它只認識「事件本身 (OrderPlacedEvent)」或「事件介面 (IOrderPlacedHandler)」。");
+            Console.WriteLine("2. 核心責任邊界：訂單成立是「核心職責」，扣庫存/送點數/開發票/通知則是「跨領域副作用 (Side Effects)」。");
+            Console.WriteLine("3. 白板面試必問：同步事件 (In-Memory) vs. 非同步訊息佇列 (Message Queue)，以及訂閱者失敗時是否該連帶回滾核心交易？");
             Console.ResetColor();
         }
 
         private static void ShowExam()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("\n🏆 【階段五晉級考核條件】");
-            Console.WriteLine("1. 清楚區分 Entity 與 Value Object，成功封裝不可變的 DateRange 值物件與重疊檢查。");
-            Console.WriteLine("2. 能用 Decorator Pattern 動態組合多重優惠規則，扛住面試官的「策略疊加追問」。");
-            Console.WriteLine("3. 通過白板面試官的邊界測試追問（例如退房當天同一天新房客入住算不算重疊？）。");
-            Console.WriteLine("\n完成任務 5.1 ~ 5.3 後，在 AI 聊天室申請階段五考核（或隨時輸入「切換模擬面試」）！");
+            Console.WriteLine("\n🏆 【階段七晉級考核條件】");
+            Console.WriteLine("1. 精準診斷高耦合 Service 建構子依賴爆炸與測試困難的根源。");
+            Console.WriteLine("2. 能以 Observer / Domain Events 完成發布者與訂閱者解耦，並透過 OCP 無痛掛載新訂閱者。");
+            Console.WriteLine("3. 能在白板面試追問中清楚釐清同步事件與非同步佇列的取捨，以及跨領域副作用的失敗隔離策略。");
+            Console.WriteLine("\n完成任務 7.1 ~ 7.3 後，在 AI 聊天室申請階段七考核（或隨時輸入「切換模擬面試」）！");
             Console.ResetColor();
         }
 

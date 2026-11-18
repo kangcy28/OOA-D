@@ -25,9 +25,9 @@
 ### 進階 OOA/D 與白板面試實戰篇（進行中 🚀）
 | 階段 | 核心主題 | 驗收核心與面試考點 | 狀態 |
 | :--- | :--- | :--- | :---: |
-| **Stage 5** | **值物件與裝飾者模式** | 消滅基本型別偏執、`DateRange` 防超賣重疊判定、多重優惠動態疊加 | 🚀 **進行中** |
-| **Stage 6** | **複雜狀態機重構** | 狀態模式（State Pattern）手撕面試名題：自動販賣機 / 智慧取件櫃 | 🔒 待解鎖 |
-| **Stage 7** | **事件驅動與解耦** | 觀察者模式 / 領域事件（Domain Events），避免 Service 依賴膨脹 | 🔒 待解鎖 |
+| **Stage 5** | **值物件與裝飾者模式** | 消滅基本型別偏執、`DateRange` 防超賣重疊判定、多重優惠動態疊加 | 🏆 **100 / 100** |
+| **Stage 6** | **複雜狀態機重構** | 狀態模式（State Pattern）手撕面試名題：自動販賣機 / 智慧取件櫃 | 🏆 **100 / 100** |
+| **Stage 7** | **事件驅動與解耦** | 觀察者模式 / 領域事件（Domain Events），避免 Service 依賴膨脹 | 🚀 **進行中** |
 | **Stage 8** | **終極白板模擬面試** | 4 步標準 LLD 解題法手撕經典題：**智慧停車場系統 (Parking Lot)** | 🔒 待解鎖 |
 
 詳細進度與考核答辯歷程請參閱 [ooad_learning_tracker.md](ooad_learning_tracker.md)。
@@ -110,9 +110,13 @@ OOA-D/
 │   ├── UnitTest1.cs
 │   └── Stage4_SystemDesign.Tests.csproj
 │
-└── Stage5_AdvancedOOAD/               # 階段五：Value Object 與 Decorator 進階練習
+├── Stage5_AdvancedOOAD/               # 階段五：Value Object 與 Decorator 進階練習
+│   ├── Program.cs
+│   └── Stage5_AdvancedOOAD.csproj
+│
+└── Stage6_StatePattern/               # 階段六：狀態模式 (State Pattern) 實戰
     ├── Program.cs
-    └── Stage5_AdvancedOOAD.csproj
+    └── Stage6_StatePattern.csproj
 ```
 
 ---
@@ -141,6 +145,9 @@ dotnet run --project Stage3_Playground
 
 # 執行階段五 (進階 Value Object DateRange 與防超賣重疊判定示範)
 dotnet run --project Stage5_AdvancedOOAD
+
+# 執行階段六 (狀態模式 State Pattern 自動販賣機示範)
+dotnet run --project Stage6_StatePattern
 
 # 啟動互動學習教練 (支援 /mock 指令查看白板面試題庫)
 run_coach.bat
