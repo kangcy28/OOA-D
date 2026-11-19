@@ -197,12 +197,16 @@
 
 ### 學習里程碑
 - [x] 任務 9.1：聚合邊界診斷 —— 為什麼不該讓 `Customer` 物件裡直接塞一個 `List<Order>`？（記憶體爆炸與鎖競爭分析）
-- [ ] 任務 9.2：跨聚合設計守則 —— 用 ID 參照取代物件直接參照（Reference by ID）、由聚合根統一守護不變條件（Invariants）
+- [x] 任務 9.2：跨聚合設計守則 —— 用 ID 參照取代物件直接參照（Reference by ID）、由聚合根統一守護不變條件（Invariants）
 - [ ] 任務 9.3：持久化解耦 —— 設計 `IOrderRepository` 與 `IUnitOfWork`（In-Memory 實作），確保領域層零資料庫依賴
 - [ ] 任務 9.4：階段九晉級考核 —— 聚合邊界設計答辯（強一致性聚合內邊界 vs. 跨聚合最終一致性取捨）
 
 ### 答辯與評估記錄
 - **任務 9.1 通過** (2026-11-19)：精準指出上帝聚合（God Aggregate）將所有歷史訂單與明細綁在 `Customer` 下，即使僅修改 Email 也會導致載入大量 `Order × OrderItem` 引發記憶體／CPU 壓力與不必要的鎖競爭；同時看穿 `OrderItem` 直接持有 `Product` 實體會破壞聚合邊界，導致歷史商品屬性被污染與高併發下的鎖衝突／超賣風險。
+- **任務 9.2 通過** (2026-11-19)：
+  1. **跨聚合 Reference by ID 實踐**：成功將 `Customer`、`Order`、`Product` 拆為獨立聚合，跨聚合僅保留 `CustomerId` 與 `ProductId`。
+  2. **歷史快照防價格漂移**：`OrderItem` 完整封裝下單當下之 `ProductName` 與 `UnitPrice`，經執行驗證商品後續漲價完全不影響訂單歷史金額。
+  3. **聚合根守護 Invariants**：運用 Backing Field 模式（`private readonly List<OrderItem> _items` 搭配 `IReadOnlyCollection<OrderItem> Items`），完全杜絕外部越權篡改，強制由 `Order.AddItem` 統一驗證狀態與守門。代碼於 [Stage9_TacticalDDD/Program.cs](file:///c:/Users/USER/Desktop/OOAD/Stage9_TacticalDDD/Program.cs) 執行驗證全數通過！
 
 ---
 
