@@ -59,31 +59,43 @@ public class Program
 {
     public static void Main()
     {
-        Console.WriteLine("=== Stage 9: 戰術 DDD 聚合邊界實戰 ===");
-        
-        // 1. 建立商品與客戶（獨立聚合，各自管理生命週期）
-        var product = new Product("機械鍵盤", 3000m, 10);
+        Console.WriteLine("=== Stage 9 (任務 9.3): 持久化解耦與 Unit of Work 交易驗證 ===");
+
+        // 1. 組裝基礎設施層與應用層服務
+        var db = new InMemoryDatabase();
+        var unitOfWork = new InMemoryUnitOfWork();
+        IOrderRepository orderRepo = new InMemoryOrderRepository(db, unitOfWork);
+        IProductRepository productRepo = new InMemoryProductRepository(db, unitOfWork);
+        var placeOrderService = new PlaceOrderService(orderRepo, productRepo, unitOfWork);
+
+        // 2. 初始化測試資料（商品與客戶）
+        var keyboard = new Product("機械鍵盤", 3000m, 10);
+        db.Products[keyboard.Id] = keyboard.Clone();
         var customer = new Customer("Alice", "alice@example.com");
 
-        // 2. 建立訂單聚合根（跨聚合僅以 ID 參照，不直接抓取整個 Customer 實體）
-        var order = new Order(customer.Id);
-        
-        // 3. 聚合根統一守門：由 Order 守護不變條件，下單當下拍下名稱與價格快照
-        order.AddItem(product.Id, product.Name, product.Price, 2);
-        product.DeductStock(2);
+        Console.WriteLine($"[初始狀態] 商品: {keyboard.Name}, 單價: ${keyboard.Price}, 初始庫存: {db.Products[keyboard.Id].Stock}\n");
 
-        Console.WriteLine($"[訂單建立成功]");
-        Console.WriteLine($"訂單 ID: {order.Id}");
-        Console.WriteLine($"客戶 ID: {order.CustomerId}");
-        Console.WriteLine($"訂單狀態: {order.OrderStatus}");
-        Console.WriteLine($"訂單項目數: {order.Items.Count}");
-        Console.WriteLine($"訂單總金額: ${order.TotalAmount}");
+        // 3. 場景 A：正常下單（購買 2 個鍵盤）
+        Console.WriteLine("--- 場景 A：正常下單 (購買 2 個) ---");
+        var orderId = placeOrderService.PlaceOrder(customer.Id, keyboard.Id, 2);
+        var savedOrder = db.Orders[orderId];
+        Console.WriteLine($"✅ 下單成功！訂單 ID: {savedOrder.Id}");
+        Console.WriteLine($"   訂單總金額: ${savedOrder.TotalAmount} (預期: $6000)");
+        Console.WriteLine($"   DB 剩餘庫存: {db.Products[keyboard.Id].Stock} (預期: 8)\n");
 
-        // 4. 驗證防價格漂移：商品後續漲價，不影響已建立訂單的歷史快照
-        product.Price = 5000m;
-        Console.WriteLine($"\n[商品漲價為 ${product.Price}]");
-        Console.WriteLine($"訂單歷史單價維持: ${order.Items.First().UnitPrice}");
-        Console.WriteLine($"訂單總額依然為: ${order.TotalAmount} (完全不受影響！)");
+        // 4. 場景 B：中途失敗回滾（扣完庫存登記後，建立 Order 時因 customerId 為 Guid.Empty 觸發例外）
+        Console.WriteLine("--- 場景 B：下單中途失敗，驗證交易回滾 ---");
+        try
+        {
+            placeOrderService.PlaceOrder(Guid.Empty, keyboard.Id, 3);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"⚠️ 捕獲預期例外: {ex.Message}");
+        }
+
+        Console.WriteLine($"🛡️ 回滾後 DB 訂單總筆數: {db.Orders.Count} (預期: 1)");
+        Console.WriteLine($"🛡️ 回滾後 DB 剩餘庫存: {db.Products[keyboard.Id].Stock} (預期依然維持: 8)");
     }
 }
 
@@ -122,6 +134,9 @@ public class Order
 
     public Order(Guid customerId)
     {
+        if (customerId == Guid.Empty)
+            throw new ArgumentException("客戶 ID 不可為空！", nameof(customerId));
+
         Id = Guid.NewGuid();
         CustomerId = customerId;
         CreatedAt = DateTime.UtcNow;
@@ -175,8 +190,21 @@ public class Product
         Stock = stock;
     }
 
+    // 🔒 私有還原建構子：供持久化層從資料重建聚合根（保留原本 ID）
+    private Product(Guid id, string name, decimal price, int stock)
+    {
+        Id = id;
+        Name = name;
+        Price = price;
+        Stock = stock;
+    }
+
+    // 🔄 模擬資料庫讀取時的反序列化複本，避免未 Commit 前直接污染 DB 記憶體參考
+    internal Product Clone() => new Product(Id, Name, Price, Stock);
+
     public void DeductStock(int qty)
     {
+        if (qty <= 0) throw new ArgumentException("扣減數量必須大於 0", nameof(qty));
         if (Stock < qty) throw new InvalidOperationException("庫存不足");
         Stock -= qty;
     }

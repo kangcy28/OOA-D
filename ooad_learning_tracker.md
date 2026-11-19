@@ -198,7 +198,7 @@
 ### 學習里程碑
 - [x] 任務 9.1：聚合邊界診斷 —— 為什麼不該讓 `Customer` 物件裡直接塞一個 `List<Order>`？（記憶體爆炸與鎖競爭分析）
 - [x] 任務 9.2：跨聚合設計守則 —— 用 ID 參照取代物件直接參照（Reference by ID）、由聚合根統一守護不變條件（Invariants）
-- [ ] 任務 9.3：持久化解耦 —— 設計 `IOrderRepository` 與 `IUnitOfWork`（In-Memory 實作），確保領域層零資料庫依賴
+- [x] 任務 9.3：持久化解耦 —— 設計 `IOrderRepository` 與 `IUnitOfWork`（In-Memory 實作），確保領域層零資料庫依賴
 - [ ] 任務 9.4：階段九晉級考核 —— 聚合邊界設計答辯（強一致性聚合內邊界 vs. 跨聚合最終一致性取捨）
 
 ### 答辯與評估記錄
@@ -207,6 +207,10 @@
   1. **跨聚合 Reference by ID 實踐**：成功將 `Customer`、`Order`、`Product` 拆為獨立聚合，跨聚合僅保留 `CustomerId` 與 `ProductId`。
   2. **歷史快照防價格漂移**：`OrderItem` 完整封裝下單當下之 `ProductName` 與 `UnitPrice`，經執行驗證商品後續漲價完全不影響訂單歷史金額。
   3. **聚合根守護 Invariants**：運用 Backing Field 模式（`private readonly List<OrderItem> _items` 搭配 `IReadOnlyCollection<OrderItem> Items`），完全杜絕外部越權篡改，強制由 `Order.AddItem` 統一驗證狀態與守門。代碼於 [Stage9_TacticalDDD/Program.cs](file:///c:/Users/USER/Desktop/OOAD/Stage9_TacticalDDD/Program.cs) 執行驗證全數通過！
+- **任務 9.3 通過** (2026-11-19)：
+  1. **架構守則辨析精準**：明確指出只能為聚合根建立 Repository（嚴禁 `IOrderItemRepository` 開後門繞過聚合根破壞不變條件），並說明透過 `IUnitOfWork` 統一提交變更才能確保多聚合寫入的 Transaction 原子性（All or Nothing）。
+  2. **持久化解耦與 DIP 落實**：將領域介面（`IOrderRepository`、`IProductRepository`、`IUnitOfWork`）與 In-Memory 基礎設施實作拆分為 [Persistence.cs](file:///c:/Users/USER/Desktop/OOAD/Stage9_TacticalDDD/Persistence.cs) 與 [PlaceOrderService.cs](file:///c:/Users/USER/Desktop/OOAD/Stage9_TacticalDDD/PlaceOrderService.cs)，確保領域層零資料庫依賴。
+  3. **應用層交易協調實戰**：親手實作 `PlaceOrderService.PlaceOrder`（含商品快照參數傳遞、統一 `Commit()` 與 `catch` 失敗 `Rollback()` + `throw;` 保留原始例外），經實測正常下單與中途失敗回滾皆 100% 驗證通過。
 
 ---
 
