@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stage6_StatePattern", "Stag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stage7_ObserverAndEvents", "Stage7_ObserverAndEvents\Stage7_ObserverAndEvents.csproj", "{6F3770A5-5423-4D12-8475-B84734CBF3D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stage9_TacticalDDD", "Stage9_TacticalDDD\Stage9_TacticalDDD.csproj", "{5FC41D58-2D80-4568-806F-F6088A16A923}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{6F3770A5-5423-4D12-8475-B84734CBF3D8}.Release|x64.Build.0 = Release|Any CPU
 		{6F3770A5-5423-4D12-8475-B84734CBF3D8}.Release|x86.ActiveCfg = Release|Any CPU
 		{6F3770A5-5423-4D12-8475-B84734CBF3D8}.Release|x86.Build.0 = Release|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Debug|x64.Build.0 = Debug|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Debug|x86.Build.0 = Debug|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Release|x64.ActiveCfg = Release|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Release|x64.Build.0 = Release|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Release|x86.ActiveCfg = Release|Any CPU
+		{5FC41D58-2D80-4568-806F-F6088A16A923}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
