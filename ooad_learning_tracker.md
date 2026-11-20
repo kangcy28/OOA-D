@@ -7,7 +7,7 @@
 - **基礎篇結業日期**：2026-11-17
 - **進階與面試篇結業日期**：2026-11-18
 - **企業級架構篇啟動日期**：2026-11-19
-- **當前總進度**：`🚀 企業級架構延伸篇進行中（目前位於：階段 9 - 戰術 DDD：聚合邊界與持久化抽象）`
+- **當前總進度**：`🚀 企業級架構延伸篇進行中（目前位於：階段 11 - 潔淨架構與讀寫分離 (Clean Architecture & CQRS)）`
 
 > 💡 **雙模式自由切換**：在對話中隨時輸入「**切換模擬面試**」即可直接進入白板面試官對練（方案 B）；輸入「**回到闖關模式**」即可繼續階段任務（方案 A）。
 
@@ -25,9 +25,9 @@
 | **階段 6** | 進階 OOD：複雜狀態機重構 (State Pattern) | 🏆 **已通關** | 消滅狀態 switch/if-else、手撕面試名題「自動販賣機 / 訂單狀態機」 | 100 / 100 |
 | **階段 7** | 進階架構：事件驅動與解耦 (Observer / Domain Events) | 🏆 **已通關** | 發布訂閱解耦跨領域副作用、防止 Service 依賴膨脹 | 100 / 100 |
 | **階段 8** | 終極白板面試：智慧停車場系統 (Mock Interview) | 🏆 **已通關** | 完整 4 步白板面試法：需求釐清 ➔ OOA ➔ OOD ➔ 追問防禦 | 100 / 100 |
-| **階段 9** | 戰術 DDD：聚合邊界與持久化抽象 (Aggregate Root & Repository) | 🚀 **進行中** | 劃分強一致性邊界、跨聚合僅存 ID、Repository 與 Unit of Work 解耦 | 待考核 |
-| **階段 10** | 高併發控制與冪等性實戰 (Concurrency & Idempotency) | 🔒 待解鎖 | 悲觀鎖 vs. 樂觀鎖版本衝突重試、Idempotency Key 防重複扣款、多執行緒壓測 | 待考核 |
-| **階段 11** | 潔淨架構與讀寫分離 (Clean Architecture & CQRS) | 🔒 待解鎖 | 依賴反轉專案分層、CQRS 命令走聚合根 + 查詢直出輕量 Read DTO | 待考核 |
+| **階段 9** | 戰術 DDD：聚合邊界與持久化抽象 (Aggregate Root & Repository) | 🏆 **已通關** | 劃分強一致性邊界、跨聚合僅存 ID、Repository 與 Unit of Work 解耦 | 85 / 100 |
+| **階段 10** | 高併發控制與冪等性實戰 (Concurrency & Idempotency) | 🏆 **已通關** | 悲觀鎖 vs. 樂觀鎖版本衝突重試、Idempotency Key 防重複扣款、多執行緒壓測 | 91 / 100 |
+| **階段 11** | 潔淨架構與讀寫分離 (Clean Architecture & CQRS) | 🚀 **進行中** | 依賴反轉專案分層、CQRS 命令走聚合根 + 查詢直出輕量 Read DTO | 待考核 |
 | **階段 12** | 分散式一致性與終極架構白板 (Outbox & Saga) | 🔒 待解鎖 | 解決雙寫問題 (Outbox)、跨服務補償交易 (Saga)、高併發分散式系統白板面試 | 待考核 |
 
 ---
@@ -199,7 +199,7 @@
 - [x] 任務 9.1：聚合邊界診斷 —— 為什麼不該讓 `Customer` 物件裡直接塞一個 `List<Order>`？（記憶體爆炸與鎖競爭分析）
 - [x] 任務 9.2：跨聚合設計守則 —— 用 ID 參照取代物件直接參照（Reference by ID）、由聚合根統一守護不變條件（Invariants）
 - [x] 任務 9.3：持久化解耦 —— 設計 `IOrderRepository` 與 `IUnitOfWork`（In-Memory 實作），確保領域層零資料庫依賴
-- [ ] 任務 9.4：階段九晉級考核 —— 聚合邊界設計答辯（強一致性聚合內邊界 vs. 跨聚合最終一致性取捨）
+- [x] 任務 9.4：階段九晉級考核 —— 聚合邊界設計答辯（強一致性聚合內邊界 vs. 跨聚合最終一致性取捨）
 
 ### 答辯與評估記錄
 - **任務 9.1 通過** (2026-11-19)：精準指出上帝聚合（God Aggregate）將所有歷史訂單與明細綁在 `Customer` 下，即使僅修改 Email 也會導致載入大量 `Order × OrderItem` 引發記憶體／CPU 壓力與不必要的鎖競爭；同時看穿 `OrderItem` 直接持有 `Product` 實體會破壞聚合邊界，導致歷史商品屬性被污染與高併發下的鎖衝突／超賣風險。
@@ -211,16 +211,29 @@
   1. **架構守則辨析精準**：明確指出只能為聚合根建立 Repository（嚴禁 `IOrderItemRepository` 開後門繞過聚合根破壞不變條件），並說明透過 `IUnitOfWork` 統一提交變更才能確保多聚合寫入的 Transaction 原子性（All or Nothing）。
   2. **持久化解耦與 DIP 落實**：將領域介面（`IOrderRepository`、`IProductRepository`、`IUnitOfWork`）與 In-Memory 基礎設施實作拆分為 [Persistence.cs](file:///c:/Users/USER/Desktop/OOAD/Stage9_TacticalDDD/Persistence.cs) 與 [PlaceOrderService.cs](file:///c:/Users/USER/Desktop/OOAD/Stage9_TacticalDDD/PlaceOrderService.cs)，確保領域層零資料庫依賴。
   3. **應用層交易協調實戰**：親手實作 `PlaceOrderService.PlaceOrder`（含商品快照參數傳遞、統一 `Commit()` 與 `catch` 失敗 `Rollback()` + `throw;` 保留原始例外），經實測正常下單與中途失敗回滾皆 100% 驗證通過。
+- **任務 9.4 晉級考核通過 (85 分)** (2026-11-20)：
+  1. **跨聚合交易與失敗收尾（35/40）**：掌握大交易鎖表與回滾風險，失敗處理修正為訂單狀態轉移（改為失敗／待重試而非物理刪除）；補齊「微服務分庫時本地 ACID UnitOfWork 無法跨 DB」之架構根因。
+  2. **強一致性邊界劃分（26/35）**：商品與評論拆分為獨立聚合並採最終一致判斷滿分；洞悉預算併發超支風險，並透過指導補強「將剩餘額度收斂於 BudgetAccount 主聚合根統一守門、龐大 ExpenseClaim 明細獨立拆出並以 ID 關聯」之小聚合強一致心法。
+  3. **封裝保護與查詢邊界（24/25）**：確立 private set + 還原建構子防護，駁斥上帝聚合與子實體開後門 Repository，並運用 Order.CustomerId 透過 GetByCustomerId 滿足報表查詢（同步銜接階段 11 CQRS Read DTO）。
 
 ---
 
 ## 📝 階段十：高併發控制與冪等性實戰 (Concurrency & Idempotency)
 
 ### 學習里程碑
-- [ ] 任務 10.1：重現災難 —— 用 `Task.WhenAll` 模擬 50 個併發請求同時搶購 5 張票，親眼見證 Race Condition 超賣
-- [ ] 任務 10.2：防禦實戰 —— 分別實作悲觀鎖（`SemaphoreSlim` / Lock）與樂觀鎖（`Version` 衝突檢查與重試）並比較適用場景
-- [ ] 任務 10.3：冪等性設計 —— 網路逾時重試防重複扣款，實作 `IdempotencyKey` 防重送機制
-- [ ] 任務 10.4：階段十晉級考核 —— 高併發系統設計白板追問（搶票秒殺 vs. 一般表單編輯的鎖策略選型）
+- [x] 任務 10.1：重現災難 —— 用 `Task.WhenAll` 模擬 50 個併發請求同時搶購 5 張票，親眼見證 Race Condition 超賣
+- [x] 任務 10.2：防禦實戰 —— 分別實作悲觀鎖（`SemaphoreSlim` / Lock）與樂觀鎖（`Version` 衝突檢查與重試）並比較適用場景
+- [x] 任務 10.3：冪等性設計 —— 網路逾時重試防重複扣款，實作 `IdempotencyKey` 防重送機制
+- [x] 任務 10.4：階段十晉級考核 —— 高併發系統設計白板追問（搶票秒殺 vs. 一般表單編輯的鎖策略選型）
+
+### 答辯與評估記錄
+- **任務 10.1 通過** (2026-11-20)：精準診斷 50 併發搶購 5 張票之災難成因——多執行緒同時讀取過期快照導致聚合根守門員（`ReserveOne`）全部放行（Check-Then-Act Race Condition），並點破 50 次寫回互相覆寫造成 Lost Update（遺失更新），使 DB 殘留 4 張幽靈餘票進而引發第 51 人之後無止盡超賣的連鎖風險。
+- **任務 10.2 通過** (2026-11-20)：成功於 [ConcurrencyServices.cs](file:///c:/Users/FIT1635/Documents/OOA-D/Stage10_ConcurrencyAndIdempotency/ConcurrencyServices.cs) 實作悲觀鎖（`SemaphoreSlim`：5/5 賣出、0 餘票、1483 ms）與樂觀鎖（`Version` + 重試：5/5 賣出、0 餘票、180 ms、115 次衝突重試、Version=6）；精準掌握 `lock/Monitor` 具執行緒親和性不可跨 `await` 之原理，並透過數據對比釐清「熱點寫入衝突率」與「交易持續時間」決定悲觀／樂觀鎖選型甜蜜點。
+- **任務 10.3 通過** (2026-11-20)：成功於 [IdempotencyLab.cs](file:///c:/Users/FIT1635/Documents/OOA-D/Stage10_ConcurrencyAndIdempotency/IdempotencyLab.cs) 實作 `IdempotentPaymentService`（Fast Path + Per-Key `SemaphoreSlim` + Double-Checked Locking），經實驗 4 驗證循序重試 3 次與 10 併發連點皆達零重複扣款（總扣款 2 次、餘額 $5000、收據一致）；釐清 Double-Checked Locking「外層顧效能、內層保正確」原理，並補齊細粒度鎖隔離不同用戶及多機部署改用 DB `UNIQUE` 約束／Redis `SET NX` 之實務架構。
+- **任務 10.4 晉級考核通過 (91 分)** (2026-11-20)：
+  1. **鎖策略選型對決（30/35）**：精準判定長思考表單採樂觀鎖、萬人秒殺採悲觀鎖並指出秒殺誤用樂觀鎖將引發大量衝突重試風暴；補強「表單誤用悲觀鎖會造成長達數分鐘的 Long-held Lock 與資料庫連線池耗盡」之差異。
+  2. **金流重試與冪等性追問（31/35）**：完整掌握多機記憶體隔離痛點與 DB UNIQUE 約束／Redis SET NX 解法，並提出失敗後重新發起意圖應換新 Key；精準釐清「鎖擋不住逾時重試」的根因是前次已正常放鎖、後續重試被視為新合法交易。
+  3. **高併發地雷排錯（30/30 滿分）**：瞬間揪出欠缺 try/finally 導致鎖洩漏與 Deadlock，並完美推演出漏寫內層 Double-Check 在循序重試（扣 1 次）與同一毫秒 10 併發（暴扣 10 次）之截然不同後果！
 
 ---
 
