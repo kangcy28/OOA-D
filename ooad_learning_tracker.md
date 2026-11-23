@@ -263,7 +263,12 @@
 ## 📝 階段十二：分散式一致性與終極架構白板 (Outbox & Saga)
 
 ### 學習里程碑
-- [ ] 任務 12.1：雙寫危機（Dual-Write Problem）—— 當「訂單寫入 DB 成功」但「發布事件到 RabbitMQ 失敗」的解題思維
-- [ ] 任務 12.2：Transactional Outbox Pattern —— 同交易寫入業務表與 Outbox 表，搭配背景 Relay Worker 達成至少一次投遞
-- [ ] 任務 12.3：Saga 模式 —— 跨服務流程（建單 ➔ 扣庫存 ➔ 扣款）中途失敗時的補償交易（Compensating Transactions）設計
+- [x] 任務 12.1：雙寫危機（Dual-Write Problem）—— 當「訂單寫入 DB 成功」但「發布事件到 RabbitMQ 失敗」的解題思維
+- [x] 任務 12.2：Transactional Outbox Pattern —— 同交易寫入業務表與 Outbox 表，搭配背景 Relay Worker 達成至少一次投遞
+- [x] 任務 12.3：Saga 模式 —— 跨服務流程（建單 ➔ 扣庫存 ➔ 扣款）中途失敗時的補償交易（Compensating Transactions）設計
 - [ ] 任務 12.4：終極白板面試 —— 全真模擬「高併發電商搶購與金流訂單系統」（LLD 領域建模 + HLD 分散式一致性防禦）
+
+### 答辯與評估記錄
+- **任務 12.1 通過** (2026-11-23)：精準抓出雙寫危機的根本原因——跨資料庫與 RabbitMQ 的連續操作不屬於同一本地 ACID 交易邊界；清晰點破 2PC 分散式交易需跨系統同步等待與鎖定資源導致效能低下的痛點，並正確提出以 **Transactional Outbox Pattern** 收斂為單一資料庫本地 ACID 交易來破局。
+- **任務 12.2 完成（參考解答驗證通過）** (2026-11-23)：學員選擇略過手寫實作，由教練於 [OutboxLab.cs](file:///c:/Users/USER/Desktop/OOAD/Stage12_DistributedConsistency/OutboxLab.cs) 補齊 `OutboxOrderService`、`OutboxRelayWorker` 與 `IdempotentInventoryConsumer` 參考解答，實測 DB Commit 失敗同步回滾、RabbitMQ 瞬斷自動補發，以及 Worker 崩潰重送下的冪等去重三項驗證全數通過。
+- **任務 12.3 通過** (2026-11-23)：精準掌握語意回滾（保留 Cancelled 稽核紀錄而非物理刪除）與 Pivot Transaction 分界點（不可逆動作置於 Pivot 之後）；確立補償交易必須具備冪等性以安全承受網路重試；並以流程長度與除錯複雜度準確做出 Orchestration（長流程好追蹤）vs. Choreography（短流程低耦合）選型。
