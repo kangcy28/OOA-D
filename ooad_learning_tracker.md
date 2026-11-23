@@ -7,7 +7,7 @@
 - **基礎篇結業日期**：2026-11-17
 - **進階與面試篇結業日期**：2026-11-18
 - **企業級架構篇啟動日期**：2026-11-19
-- **當前總進度**：`🚀 企業級架構延伸篇進行中（目前位於：階段 11 - 潔淨架構與讀寫分離 (Clean Architecture & CQRS)）`
+- **當前總進度**：`🚀 企業級架構延伸篇進行中（目前解鎖：階段 12 - 分散式一致性與終極架構白板 (Outbox & Saga)）`
 
 > 💡 **雙模式自由切換**：在對話中隨時輸入「**切換模擬面試**」即可直接進入白板面試官對練（方案 B）；輸入「**回到闖關模式**」即可繼續階段任務（方案 A）。
 
@@ -27,8 +27,8 @@
 | **階段 8** | 終極白板面試：智慧停車場系統 (Mock Interview) | 🏆 **已通關** | 完整 4 步白板面試法：需求釐清 ➔ OOA ➔ OOD ➔ 追問防禦 | 100 / 100 |
 | **階段 9** | 戰術 DDD：聚合邊界與持久化抽象 (Aggregate Root & Repository) | 🏆 **已通關** | 劃分強一致性邊界、跨聚合僅存 ID、Repository 與 Unit of Work 解耦 | 85 / 100 |
 | **階段 10** | 高併發控制與冪等性實戰 (Concurrency & Idempotency) | 🏆 **已通關** | 悲觀鎖 vs. 樂觀鎖版本衝突重試、Idempotency Key 防重複扣款、多執行緒壓測 | 91 / 100 |
-| **階段 11** | 潔淨架構與讀寫分離 (Clean Architecture & CQRS) | 🚀 **進行中** | 依賴反轉專案分層、CQRS 命令走聚合根 + 查詢直出輕量 Read DTO | 待考核 |
-| **階段 12** | 分散式一致性與終極架構白板 (Outbox & Saga) | 🔒 待解鎖 | 解決雙寫問題 (Outbox)、跨服務補償交易 (Saga)、高併發分散式系統白板面試 | 待考核 |
+| **階段 11** | 潔淨架構與讀寫分離 (Clean Architecture & CQRS) | 🏆 **已通關** | 依賴反轉專案分層、CQRS 命令走聚合根 + 查詢直出輕量 Read DTO | 88 / 100 |
+| **階段 12** | 分散式一致性與終極架構白板 (Outbox & Saga) | 🚀 **進行中** | 解決雙寫問題 (Outbox)、跨服務補償交易 (Saga)、高併發分散式系統白板面試 | 待考核 |
 
 ---
 
@@ -241,12 +241,22 @@
 
 ### 學習里程碑
 - [x] 任務 11.1：架構病灶診斷 —— 傳統三層架構為何隨需求演進變成「大泥球（Big Ball of Mud）」？
-- [ ] 任務 11.2：Clean Architecture / Ports & Adapters —— 劃分 `Domain`、`Application`、`Infrastructure` 邊界與依賴方向
-- [ ] 任務 11.3：CQRS 實作 —— 拆分 `Command`（修改狀態，走充血聚合根）與 `Query`（報表查詢，直出輕量 Read DTO）
-- [ ] 任務 11.4：階段十一晉級考核 —— 判斷何時「不需要」CQRS 與過度設計（Over-engineering）的架構取捨
+- [x] 任務 11.2：Clean Architecture / Ports & Adapters —— 劃分 `Domain`、`Application`、`Infrastructure` 邊界與依賴方向
+- [x] 任務 11.3：CQRS 實作 —— 拆分 `Command`（修改狀態，走充血聚合根）與 `Query`（報表查詢，直出輕量 Read DTO）
+- [x] 任務 11.4：階段十一晉級考核 —— 判斷何時「不需要」CQRS 與過度設計（Over-engineering）的架構取捨
 
 ### 答辯與評估記錄
 - **任務 11.1 通過** (2026-11-21)：精準指出傳統三層架構的三大核心病灶：(1) 高層邏輯硬依賴底層資料庫導致換 DB 易傷及商業邏輯、單元測試難以隔離且報表技術細節滲透進核心模型；(2) 讀寫職責與模型混用使 Entity 充滿無法複用的欄位、Service 膨脹成大泥球；(3) 讀寫共用肥大物件導致過度撈取（Over-fetching）與效能低下。
+- **任務 11.2 通過** (2026-11-23)：
+  1. **依賴倒置（DIP）本質掌握清晰**：精確指出資料庫互動細節完全收斂在 Infrastructure Layer，換 DB 只需抽換實作 Port 的 Adapter，Domain 與 Application (Use Cases) 零改動。
+  2. **模型隔離（Domain vs. DB Model）價值透徹**：直指若不分層 Mapping，資料庫欄位與技術細節將反向滲透進 Domain，破壞封裝與不變條件，使核心領域無法維持長期穩定。代碼實作於 [CleanArchitecture.cs](file:///c:/Users/FIT1635/Documents/OOA-D/Stage11_CleanArchitectureAndCQRS/CleanArchitecture.cs) 驗證通過。
+- **任務 11.3 通過** (2026-11-23)：
+  1. **Query 繞過 Repository 核心原理**：掌握跨表報表查詢若硬走聚合根將引發多表關聯欄位膨脹、N+1 查詢與嚴重 Over-fetching，明確確立 Query 應透過 Dapper/投影 SQL 直出扁平 Read DTO。
+  2. **Command 傳回值規範**：精準指出 Command 僅需告知狀態變更與回傳 ID，避免回傳完整 Order 造成不必要的序列化與效能開銷，落實 CQS（Command Query Separation）職責邊界。代碼於 [CqrsLab.cs](file:///c:/Users/FIT1635/Documents/OOA-D/Stage11_CleanArchitectureAndCQRS/CqrsLab.cs) 驗證通過。
+- **任務 11.4 晉級考核通過 (88 分)** (2026-11-23)：
+  1. **架構選型與成本權衡（33/35）**：精闢指出單純 CRUD 不應盲目套用 CQRS / Clean Architecture，避免過度設計帶來龐大的範本代碼與維護成本；並準確指出「系統出現大泥球、讀寫嚴重失衡、報表效能瓶頸」才是升級重構的關鍵訊號。
+  2. **讀寫分離延遲與讀己之寫（28/35）**：精準識別主從複寫延遲（Replication Lag）是造成下單後查無記錄的根因；補強以「短期路由主庫（Sticky Routing）」與「前端樂觀更新（Optimistic UI）」實現讀己之寫（Read-Your-Own-Writes）一致性。
+  3. **MediatR 反思與純依賴注入（27/30）**：直覺非常敏銳！精確點破 In-Memory Bus 導致追蹤困難、編譯期檢查失效等維護痛點；補齊以純 C# Use Case 依賴注入即可兼具極高可讀性、F12 跳轉與 Clean Architecture 分層。
 
 ---
 
