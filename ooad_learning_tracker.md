@@ -286,3 +286,5 @@
 > **終極結業評語 (2026-11-25)**：  
 > 歷時 10 天（2026-11-16 ～ 2026-11-25），從物件導向零基礎一路打通 **基礎篇（Stage 1～4）**、**進階與白板面試篇（Stage 5～8）**，再攻克 **企業級分散式架構篇（Stage 9～12）**——涵蓋 **戰術 DDD 聚合邊界與 Unit of Work**、**高併發鎖策略與冪等性設計**、**Clean Architecture 與 CQRS 讀寫分離**、**Transactional Outbox 與 Saga 補償交易**，並完成高併發電商搶購與金流訂單終極白板面試！  
 > 恭喜達成全 12 階段大滿貫結業！
+
+👉 **全 12 階段綜合能力畫像與深度診斷報告**：請參閱 [engineer_profile_assessment.md](engineer_profile_assessment.md)。

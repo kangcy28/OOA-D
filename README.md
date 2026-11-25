@@ -39,6 +39,7 @@
 | **Stage 12** | **分散式一致性與終極白板** | 雙寫危機與 Outbox Pattern、Saga 補償交易、高併發電商終極白板面試 | 🏆 **76 / 100** |
 
 詳細進度與考核答辯歷程請參閱 [ooad_learning_tracker.md](ooad_learning_tracker.md)。
+全 12 階段綜合工程師畫像與深度診斷分析請參閱 [engineer_profile_assessment.md](engineer_profile_assessment.md)。
 
 ---
 
