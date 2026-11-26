@@ -38,6 +38,16 @@
 | **Stage 11** | **潔淨架構與讀寫分離 (CQRS)** | Clean Architecture 依賴反轉分層、寫入走聚合根 + 查詢直出 Read DTO | 🏆 **88 / 100** |
 | **Stage 12** | **分散式一致性與終極白板** | 雙寫危機與 Outbox Pattern、Saga 補償交易、高併發電商終極白板面試 | 🏆 **76 / 100** |
 
+### 生產級工程與遺留系統現代化實戰篇（規劃就緒 🚀）
+| 階段 | 核心主題 | 驗收核心與實戰考點 | 狀態 |
+| :--- | :--- | :--- | :---: |
+| **Stage 13** | **現代 C# 慣用語與自動化測試紀律** | Idiomatic C# 封裝、xUnit `[Theory]`、Test Doubles 與特徵測試 | 🚀 **待啟動** |
+| **Stage 14** | **真實 SQL Server 交易、鎖與執行計畫** | 隔離級別與死鎖圖、`UPDLOCK/HOLDLOCK`、CAS 原子更新與連線池壓測 | ⏳ **待解鎖** |
+| **Stage 15** | **真實基礎設施全整合 (DB + RabbitMQ + Outbox)** | Docker Compose：EF Core/Dapper CQRS、多實例 `READPAST`/`SKIP LOCKED` 與 Testcontainers | ⏳ **待解鎖** |
+| **Stage 16** | **分散式非同步狀態機與跨系統對帳** | Unknown 中間態 (`PaymentConfirming`)、主動查單/Webhook 收斂與對帳補償 | ⏳ **待解鎖** |
+| **Stage 17** | **大型遺留系統現代化與適度設計** | Seam、防腐層 (ACL)、Strangler Fig、介面粒度校準與伺服器端集中授權守門 | ⏳ **待解鎖** |
+| **Stage 18** | **系統韌性、快取一致性與負載壓測** | `Http.Resilience` / Polly 斷路器、Redis 防穿透/擊穿/雪崩、Rate Limiting 與 k6 壓測 | ⏳ **待解鎖** |
+
 詳細進度與考核答辯歷程請參閱 [ooad_learning_tracker.md](ooad_learning_tracker.md)。
 全 12 階段綜合工程師畫像與深度診斷分析請參閱 [engineer_profile_assessment.md](engineer_profile_assessment.md)。
 

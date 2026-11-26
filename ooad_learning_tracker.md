@@ -8,7 +8,8 @@
 - **進階與面試篇結業日期**：2026-11-18
 - **企業級架構篇啟動日期**：2026-11-19
 - **企業級架構篇結業日期**：2026-11-25
-- **當前總進度**：`🏆 全 12 階段大滿貫結業！（基礎篇 + 進階面試篇 + 企業級架構篇全面通關）`
+- **生產級實戰篇規劃日期**：2026-11-26
+- **當前總進度**：`🏆 Stage 1～12 大滿貫通關！｜🚀 已規劃解鎖：生產級工程與遺留系統現代化實戰篇（Stage 13～18）`
 
 > 💡 **雙模式自由切換**：在對話中隨時輸入「**切換模擬面試**」即可直接進入白板面試官對練（方案 B）；輸入「**回到闖關模式**」即可繼續階段任務（方案 A）。
 
@@ -30,6 +31,12 @@
 | **階段 10** | 高併發控制與冪等性實戰 (Concurrency & Idempotency) | 🏆 **已通關** | 悲觀鎖 vs. 樂觀鎖版本衝突重試、Idempotency Key 防重複扣款、多執行緒壓測 | 91 / 100 |
 | **階段 11** | 潔淨架構與讀寫分離 (Clean Architecture & CQRS) | 🏆 **已通關** | 依賴反轉專案分層、CQRS 命令走聚合根 + 查詢直出輕量 Read DTO | 88 / 100 |
 | **階段 12** | 分散式一致性與終極架構白板 (Outbox & Saga) | 🏆 **已通關** | 解決雙寫問題 (Outbox)、跨服務補償交易 (Saga)、高併發分散式系統白板面試 | 76 / 100 |
+| **階段 13** | 現代 C# 慣用語與自動化測試紀律 (Idiomatic C# & Testing) | 🚀 **待啟動** | Idiomatic C# 封裝、xUnit `[Theory]` 與特徵測試 (Characterization Testing) | 待考核 |
+| **階段 14** | 真實 SQL Server 交易、鎖與執行計畫 (DB Concurrency & Tuning) | ⏳ **待解鎖** | 重現隔離級別與死鎖、`UPDLOCK/HOLDLOCK`、CAS 條件原子更新、執行計畫與連線池壓測 | 待考核 |
+| **階段 15** | 真實基礎設施全整合 (EF Core / Dapper + Outbox + RabbitMQ) | ⏳ **待解鎖** | Docker Compose 實戰：寫入聚合根 + Dapper Read DTO、多實例搶單 Outbox + 冪等去重 + DLQ | 待考核 |
+| **階段 16** | 分散式非同步狀態機與跨系統對帳 (Async State Machine & Reconciliation) | ⏳ **待解鎖** | 伺服器端權威狀態機、Unknown 中間態 (`PaymentConfirming`)、查單/Webhook 收斂與對帳補償 | 待考核 |
+| **階段 17** | 大型遺留系統現代化與適度設計 (Legacy Modernization) | ⏳ **待解鎖** | Seam / 防腐層 (ACL) / Strangler Fig / 影子雙跑、介面粒度校準與伺服器端集中授權守門 | 待考核 |
+| **階段 18** | 系統韌性、快取一致性與負載壓測 (Resilience, Caching & Load Testing) | ⏳ **待解鎖** | Polly 斷路器/重試/逾時預算、Redis 防穿透/擊穿/雪崩與雙寫一致性、ASP.NET Core Rate Limiting + k6 壓測 | 待考核 |
 
 ---
 
@@ -288,3 +295,74 @@
 > 恭喜達成全 12 階段大滿貫結業！
 
 👉 **全 12 階段綜合能力畫像與深度診斷報告**：請參閱 [engineer_profile_assessment.md](engineer_profile_assessment.md)。
+
+---
+
+## 🚀 生產級工程與遺留系統現代化實戰篇（Stage 13 ～ Stage 18 規劃）
+
+> **核心目標**：走出 In-Memory 沙盒，以真實資料庫、真實訊息佇列、自動化整合測試與遺留系統改造實戰，將「架構心智模型」硬化為高壓環境下的實戰肌肉記憶。
+
+### 執行鐵律
+1. **慢火硬化節奏**：總計 8～10 週完成，每階段預留 1～2 週親手踩坑與消化，不趕進度條。
+2. **禁止跳過手寫與只看參考解答**：每個機制都必須親手實作、親手讓測試失敗並修復。
+3. **雙軌並進與自動化驗收**：在乾淨的 `.NET 8 + Docker` 沙盒環境練招並以 `dotnet test` / 容器整合測試強制驗收，同步將小步改造手法應用於真實企業級系統。
+
+---
+
+## 📝 階段十三：現代 C# 慣用語與自動化測試紀律 (Idiomatic C# & Testing)
+
+### 學習里程碑
+- [ ] 任務 13.1：Idiomatic C# 硬化 —— 統一 `private readonly _field` 與 `camelCase` 參數命名、封裝全面性（消除殘留 `public set`）、`init` / `record` / Nullable Reference Types 與 Result Pattern
+- [ ] 任務 13.2：例外處理與防禦紀律 —— 消除吞 Stack Trace 的 `throw ex;`、參數守門與不可變值物件強化
+- [ ] 任務 13.3：xUnit 測試體系實戰 —— `[Theory]` 邊界測試、Stub / Fake / Mock 正確選型與行為驗證
+- [ ] 任務 13.4：特徵測試（Characterization Testing）—— 為無規格遺留模組鎖定輸入輸出基線，達成零 `Console.WriteLine` 全自動化驗收
+
+---
+
+## 📝 階段十四：真實 SQL Server 交易、鎖與執行計畫 (DB Concurrency & Tuning)
+
+### 學習里程碑
+- [ ] 任務 14.1：隔離級別與併發異常重現 —— 在真實 Docker SQL Server 重現 `NOLOCK` 髒讀（Dirty Read）、遺失更新（Lost Update）與 Deadlock Graph 判讀
+- [ ] 任務 14.2：悲觀鎖定實戰 —— 使用 `SELECT ... WITH (UPDLOCK, HOLDLOCK)` 鎖定商業主鍵並於交易內重算剩餘量，消滅併發超轉
+- [ ] 任務 14.3：CAS 條件原子更新與跨機冪等鍵 —— 以 `UPDATE ... WHERE Id = @id AND Status = 'Pending'` 與 `UNIQUE` 約束防止併發撞車
+- [ ] 任務 14.4：執行計畫與連線池痛感壓測 —— 讀懂 Execution Plan / Covering Index，實測交易內夾帶外部 HTTP/SMTP I/O 如何耗盡連線池
+
+---
+
+## 📝 階段十五：真實基礎設施全整合 (EF Core / Dapper + Outbox + RabbitMQ)
+
+### 學習里程碑
+- [ ] 任務 15.1：Docker Compose 沙盒建置 —— `.NET 8 Web API` + `SQL Server` + `RabbitMQ`，Command 端以 EF Core 持久化充血聚合根、Query 端以 Dapper 直出 Read DTO（純 DI 無黑魔法）
+- [ ] 任務 15.2：親手實作 Transactional Outbox —— 業務資料與 `OutboxMessages` 同交易原子寫入，嚴禁略過手寫
+- [ ] 任務 15.3：多實例 Relay Worker 與防重複認領 —— 同時啟動雙 Worker，以 `WITH (UPDLOCK, READPAST)` / `FOR UPDATE SKIP LOCKED` 競爭認領並補齊 RabbitMQ 斷線重送
+- [ ] 任務 15.4：跨重啟冪等消費者與容器整合測試 —— 以 `ProcessedEvents` 主鍵去重、實作 DLQ，並以 `xUnit + Testcontainers` 通過斷線與雙 Worker 壓測
+
+---
+
+## 📝 階段十六：分散式非同步狀態機與跨系統對帳 (Async State Machine & Reconciliation)
+
+### 學習里程碑
+- [ ] 任務 16.1：伺服器端權威狀態機 —— 明確定義合法狀態轉換矩陣，完全拒絕 Client 偽造或跳躍狀態
+- [ ] 任務 16.2：Unknown 中間態與主動收斂 —— 引入 `PaymentConfirming` / `SyncPending` 中間態，實作 `IdempotencyKey`、背景主動查單 API 與 Webhook 冪等收斂
+- [ ] 任務 16.3：逾時關單與回調撞車防禦 —— 以 CAS 原子更新確保單邊勝出，落敗回調自動觸發原路退款／補償（含防空回滾與防懸掛）
+- [ ] 任務 16.4：批次對帳任務（Reconciliation Job）—— 比對本地單據與外部帳單差異並自動產出異常補償清單，全程以自動化測試驗證
+
+---
+
+## 📝 階段十七：大型遺留系統現代化與適度設計 (Legacy Modernization)
+
+### 學習里程碑
+- [ ] 任務 17.1：遺留系統切縫與防腐層 —— 運用 Seam、Anti-Corruption Layer（ACL）隔離舊式大型資料模型，並以 Strangler Fig 漸進抽離高耦合單體分支
+- [ ] 任務 17.2：影子雙跑驗證（Parallel Run）—— 在不中斷現有服務的前提下，同步比對新舊邏輯輸出差異
+- [ ] 任務 17.3：介面粒度與適度設計校準 —— 收斂過度細碎的單方法 Repository 介面為語意內聚的 Query / Write Port，平衡 ISP 與維護成本
+- [ ] 任務 17.4：伺服器端集中授權守門 —— 將前端按鈕隱藏與分散檢查收斂為獨立可測的 `ActionPolicy` 層，並系統化消滅動態 SQL 字串拼接
+
+---
+
+## 📝 階段十八：系統韌性、快取一致性與負載壓測 (Resilience, Caching & Load Testing)
+
+### 學習里程碑
+- [ ] 任務 18.1：外部依賴防雪崩 —— 導入 `.NET 8 Microsoft.Extensions.Http.Resilience` / Polly，配置 Timeout 預算、指數退避重試（區分冪等與非冪等安全邊界）、斷路器（Circuit Breaker）與艙壁隔離（Bulkhead）
+- [ ] 任務 18.2：Redis 快取與三大災難防禦 —— 實作 Cache-Aside，並親手防禦快取穿透（空值快取／布隆過濾器）、快取擊穿（分散式鎖／Singleflight 防止熱點過期回源打爆 DB）與快取雪崩（TTL 隨機打散）
+- [ ] 任務 18.3：資料庫與快取雙寫一致性 —— 比較並實測先更新 DB 再刪快取、延遲雙刪與搭配 Outbox 事件失效快取的適用邊界
+- [ ] 任務 18.4：限流保護與 k6 實戰壓測 —— 接入 ASP.NET Core Rate Limiting（Token Bucket / Concurrency Limiter），以 k6 注入外部 API 10 秒高延遲與 200 RPS 熱點流量，驗證 P95/P99 穩定、DB 無過載且斷路器自動熔斷與恢復
