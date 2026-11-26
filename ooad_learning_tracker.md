@@ -9,7 +9,7 @@
 - **企業級架構篇啟動日期**：2026-11-19
 - **企業級架構篇結業日期**：2026-11-25
 - **生產級實戰篇規劃日期**：2026-11-26
-- **當前總進度**：`🏆 Stage 1～12 大滿貫通關！｜🚀 已規劃解鎖：生產級工程與遺留系統現代化實戰篇（Stage 13～18）`
+- **當前總進度**：`🏆 Stage 1～12 大滿貫通關！｜🔥 生產級工程與遺留系統現代化實戰篇：Stage 13 進行中（任務 13.1 啟動）`
 
 > 💡 **雙模式自由切換**：在對話中隨時輸入「**切換模擬面試**」即可直接進入白板面試官對練（方案 B）；輸入「**回到闖關模式**」即可繼續階段任務（方案 A）。
 
@@ -31,7 +31,7 @@
 | **階段 10** | 高併發控制與冪等性實戰 (Concurrency & Idempotency) | 🏆 **已通關** | 悲觀鎖 vs. 樂觀鎖版本衝突重試、Idempotency Key 防重複扣款、多執行緒壓測 | 91 / 100 |
 | **階段 11** | 潔淨架構與讀寫分離 (Clean Architecture & CQRS) | 🏆 **已通關** | 依賴反轉專案分層、CQRS 命令走聚合根 + 查詢直出輕量 Read DTO | 88 / 100 |
 | **階段 12** | 分散式一致性與終極架構白板 (Outbox & Saga) | 🏆 **已通關** | 解決雙寫問題 (Outbox)、跨服務補償交易 (Saga)、高併發分散式系統白板面試 | 76 / 100 |
-| **階段 13** | 現代 C# 慣用語與自動化測試紀律 (Idiomatic C# & Testing) | 🚀 **待啟動** | Idiomatic C# 封裝、xUnit `[Theory]` 與特徵測試 (Characterization Testing) | 待考核 |
+| **階段 13** | 現代 C# 慣用語與自動化測試紀律 (Idiomatic C# & Testing) | 🔥 **進行中** | Idiomatic C# 封裝、xUnit `[Theory]` 與特徵測試 (Characterization Testing) | 考核中 |
 | **階段 14** | 真實 SQL Server 交易、鎖與執行計畫 (DB Concurrency & Tuning) | ⏳ **待解鎖** | 重現隔離級別與死鎖、`UPDLOCK/HOLDLOCK`、CAS 條件原子更新、執行計畫與連線池壓測 | 待考核 |
 | **階段 15** | 真實基礎設施全整合 (EF Core / Dapper + Outbox + RabbitMQ) | ⏳ **待解鎖** | Docker Compose 實戰：寫入聚合根 + Dapper Read DTO、多實例搶單 Outbox + 冪等去重 + DLQ | 待考核 |
 | **階段 16** | 分散式非同步狀態機與跨系統對帳 (Async State Machine & Reconciliation) | ⏳ **待解鎖** | 伺服器端權威狀態機、Unknown 中間態 (`PaymentConfirming`)、查單/Webhook 收斂與對帳補償 | 待考核 |

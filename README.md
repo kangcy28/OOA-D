@@ -41,7 +41,7 @@
 ### 生產級工程與遺留系統現代化實戰篇（規劃就緒 🚀）
 | 階段 | 核心主題 | 驗收核心與實戰考點 | 狀態 |
 | :--- | :--- | :--- | :---: |
-| **Stage 13** | **現代 C# 慣用語與自動化測試紀律** | Idiomatic C# 封裝、xUnit `[Theory]`、Test Doubles 與特徵測試 | 🚀 **待啟動** |
+| **Stage 13** | **現代 C# 慣用語與自動化測試紀律** | Idiomatic C# 封裝、xUnit `[Theory]`、Test Doubles 與特徵測試 | 🔥 **進行中** |
 | **Stage 14** | **真實 SQL Server 交易、鎖與執行計畫** | 隔離級別與死鎖圖、`UPDLOCK/HOLDLOCK`、CAS 原子更新與連線池壓測 | ⏳ **待解鎖** |
 | **Stage 15** | **真實基礎設施全整合 (DB + RabbitMQ + Outbox)** | Docker Compose：EF Core/Dapper CQRS、多實例 `READPAST`/`SKIP LOCKED` 與 Testcontainers | ⏳ **待解鎖** |
 | **Stage 16** | **分散式非同步狀態機與跨系統對帳** | Unknown 中間態 (`PaymentConfirming`)、主動查單/Webhook 收斂與對帳補償 | ⏳ **待解鎖** |
